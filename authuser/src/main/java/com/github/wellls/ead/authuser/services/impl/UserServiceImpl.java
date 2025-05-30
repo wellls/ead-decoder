@@ -1,5 +1,6 @@
 package com.github.wellls.ead.authuser.services.impl;
 
+import com.github.wellls.ead.authuser.exceptions.NotFoundException;
 import com.github.wellls.ead.authuser.models.UserModel;
 import com.github.wellls.ead.authuser.repositories.UserRepository;
 import com.github.wellls.ead.authuser.services.UserService;
@@ -23,8 +24,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserModel> findById(UUID userId) {
-        return userRepository.findById(userId);
+    public UserModel findById(UUID userId) {
+        Optional<UserModel> userModelOptional = userRepository.findById(userId);
+        if(userModelOptional.isEmpty()) {
+            throw new NotFoundException("Error: User not found.");
+        }
+        return userModelOptional.get();
     }
 
     @Override
