@@ -1,5 +1,7 @@
 package com.github.wellls.ead.authuser.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.github.wellls.ead.authuser.dtos.UserRecordDto;
 import com.github.wellls.ead.authuser.models.UserModel;
 import com.github.wellls.ead.authuser.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -34,4 +36,34 @@ public class UserController {
         userService.delete(userService.findById(userId));
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
     }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Object> updateUser(@PathVariable(value="userId") UUID userId,
+                                             @RequestBody @JsonView(UserRecordDto.UserView.UserPut.class)
+                                             UserRecordDto userRecordDto) {
+        var userModel = userService.updateUser(userRecordDto, userService.findById(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(userModel);
+    }
+
+    @PutMapping("/{userId}/password")
+    public ResponseEntity<Object> updatePassword(@PathVariable(value="userId") UUID userId,
+                                             @RequestBody @JsonView(UserRecordDto.UserView.PasswordPut.class)
+                                             UserRecordDto userRecordDto) {
+        var userModel = userService.findById(userId);
+        if(!userModel.getPassword().equals(userRecordDto.oldPassword())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("ERROR: Mismatched old password.");
+        }
+        userService.updatePassword(userRecordDto, userModel);
+        return ResponseEntity.status(HttpStatus.OK).body("Password updated successfully.");
+    }
+
+    @PutMapping("/{userId}/image")
+    public ResponseEntity<Object> updateImage(@PathVariable(value="userId") UUID userId,
+                                             @RequestBody @JsonView(UserRecordDto.UserView.ImagePut.class)
+                                             UserRecordDto userRecordDto) {
+        var userModel = userService.updateImage(userRecordDto, userService.findById(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(userModel);
+    }
+
+
 }
