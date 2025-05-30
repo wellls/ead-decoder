@@ -29,10 +29,10 @@ public class UserModel implements Serializable {
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false, length = 20)
     private String password;
 
-    @JsonIgnore
     @Column(nullable = false, length = 150)
     private String fullName;
 

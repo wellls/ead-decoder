@@ -1,5 +1,6 @@
 package com.github.wellls.ead.authuser.services;
 
+import com.github.wellls.ead.authuser.dtos.UserRecordDto;
 import com.github.wellls.ead.authuser.models.UserModel;
 
 import java.util.List;
@@ -9,4 +10,7 @@ public interface UserService {
     List<UserModel> findAll();
     UserModel findById(UUID userId);
     void delete(UserModel userModel);
+    UserModel registerUser(UserRecordDto userRecordDto);
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
 }
