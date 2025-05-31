@@ -6,6 +6,7 @@ import com.github.wellls.ead.authuser.models.UserModel;
 import com.github.wellls.ead.authuser.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +40,9 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<Object> updateUser(@PathVariable(value="userId") UUID userId,
-                                             @RequestBody @JsonView(UserRecordDto.UserView.UserPut.class)
+                                             @RequestBody
+                                             @Validated(UserRecordDto.UserView.UserPut.class)
+                                             @JsonView(UserRecordDto.UserView.UserPut.class)
                                              UserRecordDto userRecordDto) {
         var userModel = userService.updateUser(userRecordDto, userService.findById(userId));
         return ResponseEntity.status(HttpStatus.OK).body(userModel);
@@ -47,7 +50,9 @@ public class UserController {
 
     @PutMapping("/{userId}/password")
     public ResponseEntity<Object> updatePassword(@PathVariable(value="userId") UUID userId,
-                                             @RequestBody @JsonView(UserRecordDto.UserView.PasswordPut.class)
+                                             @RequestBody
+                                             @Validated(UserRecordDto.UserView.PasswordPut.class)
+                                             @JsonView(UserRecordDto.UserView.PasswordPut.class)
                                              UserRecordDto userRecordDto) {
         var userModel = userService.findById(userId);
         if(!userModel.getPassword().equals(userRecordDto.oldPassword())) {
@@ -59,7 +64,9 @@ public class UserController {
 
     @PutMapping("/{userId}/image")
     public ResponseEntity<Object> updateImage(@PathVariable(value="userId") UUID userId,
-                                             @RequestBody @JsonView(UserRecordDto.UserView.ImagePut.class)
+                                             @RequestBody
+                                             @Validated(UserRecordDto.UserView.ImagePut.class)
+                                             @JsonView(UserRecordDto.UserView.ImagePut.class)
                                              UserRecordDto userRecordDto) {
         var userModel = userService.updateImage(userRecordDto, userService.findById(userId));
         return ResponseEntity.status(HttpStatus.OK).body(userModel);
