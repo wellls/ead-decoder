@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.wellls.ead.course.enums.CourseLevel;
 import com.github.wellls.ead.course.enums.CourseStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -53,7 +55,8 @@ public class CourseModel implements Serializable {
     private String imageUrl;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private Set<ModuleModel> modules;
 
     public UUID getCourseId() {
