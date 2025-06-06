@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,6 +31,18 @@ public class CourseServiceImpl implements CourseService {
         this.lessonRepository = lessonRepository;
     }
 
+    public List<CourseModel> findAll() {
+        return courseRepository.findAll();
+    }
+
+    public CourseModel findById(UUID courseId) {
+        Optional<CourseModel> courseModelOptional = courseRepository.findById(courseId);
+        if(courseModelOptional.isEmpty()) {
+            // throw exception
+        }
+        return courseModelOptional.get();
+    }
+
     public CourseModel save(CourseRecordDto courseRecordDto) {
         var courseModel = new CourseModel();
         BeanUtils.copyProperties(courseRecordDto, courseModel);
@@ -41,6 +54,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public boolean existsByName(String name) {
         return courseRepository.existsByName(name);
+    }
+
+    @Override
+    public CourseModel update(CourseRecordDto courseRecordDto, CourseModel courseModel) {
+        BeanUtils.copyProperties(courseRecordDto, courseModel);
+        courseModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+        return courseRepository.save(courseModel);
     }
 
     @Transactional
