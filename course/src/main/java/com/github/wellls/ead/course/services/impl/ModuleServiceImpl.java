@@ -30,14 +30,6 @@ public class ModuleServiceImpl implements ModuleService {
         this.lessonRepository = lessonRepository;
     }
 
-    @Transactional
-    @Override
-    public void delete(ModuleModel moduleModel) {
-        UUID moduleId = moduleModel.getModuleId();
-        lessonRepository.deleteAllLessonsByModuleId(moduleId);
-        moduleRepository.delete(moduleModel);
-    }
-
     @Override
     public ModuleModel save(ModuleRecordDto moduleRecordDto, CourseModel courseModel) {
         var moduleModel = new ModuleModel();
@@ -60,5 +52,19 @@ public class ModuleServiceImpl implements ModuleService {
             throw new NotFoundException("Error: Module not found for this Course.");
         }
         return moduleModelOptional;
+    }
+
+    @Override
+    public ModuleModel update(ModuleRecordDto moduleRecordDto, ModuleModel moduleModel) {
+        BeanUtils.copyProperties(moduleRecordDto, moduleModel);
+        return moduleRepository.save(moduleModel);
+    }
+
+    @Transactional
+    @Override
+    public void delete(ModuleModel moduleModel) {
+        UUID moduleId = moduleModel.getModuleId();
+        lessonRepository.deleteAllLessonsByModuleId(moduleId);
+        moduleRepository.delete(moduleModel);
     }
 }

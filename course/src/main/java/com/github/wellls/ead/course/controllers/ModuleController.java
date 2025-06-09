@@ -46,4 +46,19 @@ public class ModuleController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(moduleService.findModuleIntoCourse(courseId, moduleId).get());
     }
+
+    @PutMapping("/courses/{courseId}/modules/{moduleId}")
+    public ResponseEntity<Object> updateModule(@PathVariable(value = "courseId") UUID courseId,
+                                               @PathVariable(value = "moduleId") UUID moduleId,
+                                               @RequestBody @Valid ModuleRecordDto moduleRecordDto){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(moduleService.update(moduleRecordDto, moduleService.findModuleIntoCourse(courseId, moduleId).get()));
+    }
+
+    @DeleteMapping("/courses/{courseId}/modules/{moduleId}")
+    public ResponseEntity<Object> deleteModule(@PathVariable(value = "courseId") UUID courseId,
+                                               @PathVariable(value = "moduleId") UUID moduleId){
+        moduleService.delete(moduleService.findModuleIntoCourse(courseId, moduleId).get());
+        return ResponseEntity.status(HttpStatus.OK).body("Module deleted successfully.");
+    }
 }
