@@ -3,7 +3,6 @@ package com.github.wellls.ead.course.services.impl;
 import com.github.wellls.ead.course.dtos.ModuleRecordDto;
 import com.github.wellls.ead.course.exceptions.NotFoundException;
 import com.github.wellls.ead.course.models.CourseModel;
-import com.github.wellls.ead.course.models.LessonModel;
 import com.github.wellls.ead.course.models.ModuleModel;
 import com.github.wellls.ead.course.repositories.LessonRepository;
 import com.github.wellls.ead.course.repositories.ModuleRepository;
@@ -12,14 +11,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class ModuleServiceImpl implements ModuleService {
 
     private final ModuleRepository moduleRepository;
@@ -50,6 +50,15 @@ public class ModuleServiceImpl implements ModuleService {
         Optional<ModuleModel> moduleModelOptional = moduleRepository.findModuleIntoCourse(courseId, moduleId);
         if(moduleModelOptional.isEmpty()){
             throw new NotFoundException("Error: Module not found for this Course.");
+        }
+        return moduleModelOptional;
+    }
+
+    @Override
+    public Optional<ModuleModel> findById(UUID moduleId) {
+        Optional<ModuleModel> moduleModelOptional = moduleRepository.findById(moduleId);
+        if (moduleModelOptional.isEmpty()){
+            throw new NotFoundException("Error: Module not found.");
         }
         return moduleModelOptional;
     }
