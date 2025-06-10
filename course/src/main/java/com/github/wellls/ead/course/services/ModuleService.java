@@ -11,10 +11,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ModuleService {
-    ModuleModel save(ModuleRecordDto moduleRecordDto, CourseModel courseModel);
-    Page<ModuleModel> findAllModulesIntoCourse(Specification<ModuleModel> spec, Pageable pageable);
-    Optional<ModuleModel> findModuleIntoCourse(UUID courseId, UUID moduleId);
-    Optional<ModuleModel> findById(UUID moduleId);
-    ModuleModel update(ModuleRecordDto moduleRecordDto, ModuleModel moduleModel);
     void delete(ModuleModel moduleModel);
+    ModuleModel save(ModuleRecordDto moduleRecordDto, CourseModel courseModel);
+    Optional<ModuleModel> findModuleIntoCourse(UUID courseId, UUID moduleId);
+    ModuleModel update(ModuleRecordDto moduleRecordDto, ModuleModel moduleModel);
+    Optional<ModuleModel> findById(UUID moduleId);
+    Page<ModuleModel> findAllModulesIntoCourse(Specification<ModuleModel> spec, Pageable pageable);
 }

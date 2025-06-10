@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface CourseService {
     List<CourseModel> findAll();
-    CourseModel findById(UUID courseId);
+    Optional<CourseModel> findById(UUID courseId);
     CourseModel save(CourseRecordDto courseRecordDto);
     boolean existsByName(String name);
     CourseModel update(CourseRecordDto courseRecordDto, CourseModel courseModel);

@@ -1,6 +1,7 @@
 package com.github.wellls.ead.course.services.impl;
 
 import com.github.wellls.ead.course.dtos.CourseRecordDto;
+import com.github.wellls.ead.course.exceptions.NotFoundException;
 import com.github.wellls.ead.course.models.CourseModel;
 import com.github.wellls.ead.course.models.LessonModel;
 import com.github.wellls.ead.course.models.ModuleModel;
@@ -35,12 +36,13 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAll();
     }
 
-    public CourseModel findById(UUID courseId) {
+    @Override
+    public Optional<CourseModel> findById(UUID courseId) {
         Optional<CourseModel> courseModelOptional = courseRepository.findById(courseId);
-        if(courseModelOptional.isEmpty()) {
-            // throw exception
+        if(courseModelOptional.isEmpty()){
+            throw new NotFoundException("Error: Course not found.");
         }
-        return courseModelOptional.get();
+        return courseModelOptional;
     }
 
     public CourseModel save(CourseRecordDto courseRecordDto) {

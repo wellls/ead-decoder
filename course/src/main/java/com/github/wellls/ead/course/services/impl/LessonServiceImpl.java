@@ -19,7 +19,6 @@ import java.util.UUID;
 
 @Service
 public class LessonServiceImpl implements LessonService {
-
     private final LessonRepository lessonRepository;
 
     public LessonServiceImpl(LessonRepository lessonRepository) {

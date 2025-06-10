@@ -21,7 +21,6 @@ import java.util.UUID;
 
 @Service
 public class ModuleServiceImpl implements ModuleService {
-
     private final ModuleRepository moduleRepository;
     private final LessonRepository lessonRepository;
 

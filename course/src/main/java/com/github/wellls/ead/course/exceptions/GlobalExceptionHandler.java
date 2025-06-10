@@ -48,5 +48,4 @@ public class GlobalExceptionHandler {
         var errorRecordResponse = new ErrorRecordResponse(HttpStatus.BAD_REQUEST.value(), "Error: Invalid enum value", errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorRecordResponse);
     }
-
 }

@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 public class LessonController {
+
     final ModuleService moduleService;
     final LessonService lessonService;
 
@@ -60,4 +61,5 @@ public class LessonController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(lessonService.update(lessonRecordDto, lessonService.findLessonIntoModule(moduleId, lessonId).get()));
     }
+
 }
