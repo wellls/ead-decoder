@@ -22,11 +22,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> registerUser(
-                                               @RequestBody
-                                               @Validated(UserRecordDto.UserView.RegistrationPost.class)
-                                               @JsonView(UserRecordDto.UserView.RegistrationPost.class)
-                                               UserRecordDto userRecordDto) {
+    public ResponseEntity<Object> registerUser(@RequestBody @Validated(UserRecordDto.UserView.RegistrationPost.class)
+                                               @JsonView(UserRecordDto.UserView.RegistrationPost.class) UserRecordDto userRecordDto){
         if(userService.existsByUsername(userRecordDto.username())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Username is Already Taken!");
         }

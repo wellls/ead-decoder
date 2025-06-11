@@ -21,6 +21,7 @@ import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
@@ -33,17 +34,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable) {
-        return userRepository.findAll(spec, pageable);
-    }
-
-    @Override
-    public UserModel findById(UUID userId) {
+    public Optional<UserModel> findById(UUID userId) {
         Optional<UserModel> userModelOptional = userRepository.findById(userId);
-        if(userModelOptional.isEmpty()) {
+        if(userModelOptional.isEmpty()){
             throw new NotFoundException("Error: User not found.");
         }
-        return userModelOptional.get();
+        return userModelOptional;
     }
 
     @Override
@@ -81,10 +77,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(UserRecordDto userRecordDto, UserModel userModel) {
+    public UserModel updatePassword(UserRecordDto userRecordDto, UserModel userModel) {
         userModel.setPassword(userRecordDto.password());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        userRepository.save(userModel);
+        return userRepository.save(userModel);
     }
 
     @Override
@@ -92,5 +88,10 @@ public class UserServiceImpl implements UserService {
         userModel.setImageUrl(userRecordDto.imageUrl());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         return userRepository.save(userModel);
+    }
+
+    @Override
+    public Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable) {
+        return userRepository.findAll(spec, pageable);
     }
 }

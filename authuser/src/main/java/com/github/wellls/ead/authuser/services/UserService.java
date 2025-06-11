@@ -7,17 +7,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
     List<UserModel> findAll();
-    Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable);
-    UserModel findById(UUID userId);
+    Optional<UserModel> findById(UUID userId);
     void delete(UserModel userModel);
     UserModel registerUser(UserRecordDto userRecordDto);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     UserModel updateUser(UserRecordDto userRecordDto, UserModel userModel);
-    void updatePassword(UserRecordDto userRecordDto, UserModel userModel);
-    UserModel updateImage(UserRecordDto userRecordDto, UserModel byId);
+    UserModel updatePassword(UserRecordDto userRecordDto, UserModel userModel);
+    UserModel updateImage(UserRecordDto userRecordDto, UserModel userModel);
+    Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable);
 }
